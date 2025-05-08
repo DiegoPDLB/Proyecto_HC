@@ -1,2 +1,14 @@
-# Proyecto_HC
-Proyecto de la clase "El arte de la programación" May 2025
+# Proyecto Herramientas Computacionales: El arte de la programacion
+
+Diego Ponce de León Betanzos A01664407
+Kamila ...
+Andre ...
+
+## Packman
+// Contenido...
+
+## Memoria
+// Contenido...
+
+## Tic Tac Toe
+// Contenido...
