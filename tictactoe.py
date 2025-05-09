@@ -13,7 +13,7 @@ from turtle import (
     setup, hideturtle, tracer, color,
     update, onscreenclick, done
 )
-from freegames import line
+from freegames import line as draw_line  # Renamed to avoid shadowing
 
 # Constantes para personalización del juego
 CELL_SIZE = 133  # Tamaño de cada celda en píxeles
@@ -25,10 +25,10 @@ O_WIDTH = 3       # Grosor de línea para O
 
 def grid():
     """Dibuja la cuadrícula del juego."""
-    line(-67, 200, -67, -200)  # Línea vertical izquierda
-    line(67, 200, 67, -200)    # Línea vertical derecha
-    line(-200, -67, 200, -67)  # Línea horizontal inferior
-    line(-200, 67, 200, 67)    # Línea horizontal superior
+    draw_line(-67, 200, -67, -200)  # Línea vertical izquierda
+    draw_line(67, 200, 67, -200)    # Línea vertical derecha
+    draw_line(-200, -67, 200, -67)  # Línea horizontal inferior
+    draw_line(-200, 67, 200, 67)    # Línea horizontal superior
 
 
 def drawx(x, y):
@@ -91,13 +91,13 @@ def check_winner(moves):
         [(-200, -200), (-67, -67), (66, 66)],     # Diagonal \
         [(66, -200), (-67, -67), (-200, 66)]      # Diagonal /
     ]
-    
+
     # Debug: imprimir los movimientos actuales con formato float
     print(f"Movimientos actuales: {moves}")
-    
+
     # Convertir coordenadas a tuplas de float para comparación
     float_moves = [(float(x), float(y)) for x, y in moves]
-    
+
     for line in winning_combinations:
         if all((float(x), float(y)) in float_moves for x, y in line):
             print(f"¡Línea ganadora encontrada: {line}")
@@ -110,29 +110,29 @@ def tap(x, y):
     x = floor(x)
     y = floor(y)
     cell = (x, y)
-    
+
     if cell in state['used_cells']:
         print(f'Casilla {cell} ya está ocupada')
         return
-    
+
     player = state['player']
     draw = players[player]
     draw(x, y)
-    
+
     player_symbol = 'X' if player == 0 else 'O'
     state['moves'][player_symbol].append(cell)
     state['used_cells'].add(cell)
-    
+
     if check_winner(state['moves'][player_symbol]):
         print(f'¡Jugador {player_symbol} ha ganado!')
         update()
         return
-    
+
     if len(state['used_cells']) == 9:
         print('¡Empate!')
         update()
         return
-    
+
     update()
     state['player'] = not player
 
