@@ -37,6 +37,15 @@ tiles = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 ]
+path = turtle.Turtle()
+path.hideturtle()
+path.speed(0)
+path.penup()
+
+food_turtle = turtle.Turtle()
+food_turtle.hideturtle()
+food_turtle.speed(0)
+food_turtle.penup()
 # fmt: on
 
 
@@ -80,7 +89,7 @@ def valid(point):
 def world():
     """Draw world using path."""
     turtle.bgcolor('black')
-    path.color('light green')
+    path.color('light green')  
 
     for index in range(len(tiles)):
         tile = tiles[index]
@@ -91,9 +100,15 @@ def world():
             square(x, y)
 
             if tile == 1:
-                path.up()
-                path.goto(x + 10, y + 10)
-                path.dot(2, 'black')
+                # Change the shape and color of the food for a purple square
+                food_turtle.up()
+                food_turtle.goto(x + 6, y + 6)  
+                food_turtle.color('purple')
+                food_turtle.begin_fill()
+                for _ in range(4):
+                    food_turtle.forward(8)  
+                    food_turtle.left(90)
+                food_turtle.end_fill()
 
 
 def move():
