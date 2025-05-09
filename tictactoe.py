@@ -78,17 +78,35 @@ def floor(value):
     return ((value + 200) // 133) * 133 - 200
 
 
-state = {'player': 0}
+# Estado del juego
+state = {
+    'player': 0,
+    'used_cells': set()  # Conjunto para almacenar casillas ocupadas
+}
 players = [drawx, drawo]
 
 
 def tap(x, y):
-    """Dibuja X u O en el cuadro tocado."""
+    """Dibuja X u O en el cuadro tocado si está disponible."""
     x = floor(x)
     y = floor(y)
+    
+    # Crear una tupla con las coordenadas de la celda
+    cell = (x, y)
+    
+    # Verificar si la celda ya está ocupada
+    if cell in state['used_cells']:
+        print(f'Casilla {cell} ya está ocupada')
+        return
+    
+    # Si la celda está libre, proceder con el movimiento
     player = state['player']
     draw = players[player]
     draw(x, y)
+    
+    # Registrar la celda como ocupada
+    state['used_cells'].add(cell)
+    
     update()
     state['player'] = not player
 
