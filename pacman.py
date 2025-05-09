@@ -89,7 +89,7 @@ def valid(point):
 def world():
     """Draw world using path."""
     turtle.bgcolor('black')
-    path.color('light green')  
+    path.color('light green')
 
     for index in range(len(tiles)):
         tile = tiles[index]
@@ -100,13 +100,13 @@ def world():
             square(x, y)
 
             if tile == 1:
-                # Change the shape and color of the food for a purple square
+                """Change the food for purple squares"""
                 food_turtle.up()
-                food_turtle.goto(x + 6, y + 6)  
+                food_turtle.goto(x + 6, y + 6)
                 food_turtle.color('purple')
                 food_turtle.begin_fill()
                 for _ in range(4):
-                    food_turtle.forward(8)  
+                    food_turtle.forward(8)
                     food_turtle.left(90)
                 food_turtle.end_fill()
 
@@ -157,7 +157,7 @@ def move():
     for point, course in ghosts:
         if abs(pacman - point) < 20:
             return
-
+    """Make the ghosts go faster by increasing their movement speed."""
     turtle.ontimer(move, 30)
 
 
