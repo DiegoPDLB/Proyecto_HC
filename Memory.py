@@ -1,4 +1,4 @@
-## Memory, puzzle game of number pairs.
+# Memory, puzzle game of number pairs.
 
 # Create square options for different game sizes
 size = 0
@@ -14,9 +14,8 @@ while True:
     except ValueError:
         print("Please enter a valid number")
 
-from random import *
-from turtle import *
-
+import turtle
+import random
 from freegames import path
 
 car = path('car.gif')
@@ -29,17 +28,18 @@ hide = [True] * (size * size)
 # Create var to count number of discovered pairs
 discovered = 0
 
+
 def square(x, y):
     """Draw white square with black outline at (x, y)."""
-    up()
-    goto(x, y)
-    down()
-    color('black', 'white')
-    begin_fill()
+    turtle.up()
+    turtle.goto(x, y)
+    turtle.down()
+    turtle.color('black', 'white')
+    turtle.begin_fill()
     for _ in range(4):
-        forward(50)
-        left(90)
-    end_fill()
+        turtle.forward(50)
+        turtle.left(90)
+    turtle.end_fill()
 
 
 def index(x, y):
@@ -57,7 +57,6 @@ def index(x, y):
 
 
 def xy(count):
-    global size
     """Convert tiles count to (x, y) coordinates."""
     # calculate starting position based on size
     start_x = -(size * 50) // 2
@@ -71,7 +70,8 @@ def tap(x, y):
     spot = index(x, y)
     mark = state['mark']
 
-    # tell game that 'discovered' variable is global to prevent UnboundLocalError
+    # tell game that 'discovered' variable is global
+    # to prevent UnboundLocalError
     global discovered
 
     if mark is None or mark == spot or tiles[mark] != tiles[spot]:
@@ -86,11 +86,10 @@ def tap(x, y):
 
 def draw():
     """Draw image and tiles."""
-    clear()
-    goto(0, 0)
-    shape(car)
-    stamp()
-    global size
+    turtle.clear()
+    turtle.goto(0, 0)
+    turtle.shape(car)
+    turtle.stamp()
 
     for count in range(size * size):
         if hide[count]:
@@ -101,25 +100,29 @@ def draw():
 
     if mark is not None and hide[mark]:
         x, y = xy(mark)
-        up()
-        goto(x + 2, y)
-        color('black')
-        write(tiles[mark], font=('Arial', 30, 'normal'))
+        turtle.up()
+        turtle.goto(x + 2, y)
+        turtle.color('black')
+        turtle.write(tiles[mark], font=('Arial', 30, 'normal'))
 
     # return Turtle to top to draw game stats
-    up()
+    turtle.up()
     # instead of hardcoded grid position for game stats
-    goto(-(size * 25), (size * 25) + 10)
+    turtle.goto(-(size * 25), (size * 25) + 10)
     # write current number of discovered pairs
-    write(f'Discovered Pairs: {discovered}', font=('Arial', 16, 'normal'))
+    turtle.write(
+        f'Discovered Pairs: {discovered}',
+        font=('Arial', 16, 'normal')
+    )
     # check whether all tiles are no longer hidden
     if all(not h for h in hide):
-        goto(-70, 0)
-        color('green')
+        turtle.goto(-70, 0)
+        turtle.color('green')
         # write message to let user know they have won
-        write("You Win!", font=('Arial', 20, 'bold'))
-    update()
-    ontimer(draw, 100)
+        turtle.write("You Win!", font=('Arial', 20, 'bold'))
+    turtle.update()
+    turtle.ontimer(draw, 100)
+
 
 # Calculate window dimensions
 tile_size = 50  # Each tile is 50x50 pixels
@@ -130,12 +133,12 @@ stats_height = 40  # Extra height for stats display
 window_width = (size * tile_size) + (2 * margin)
 window_height = (size * tile_size) + (2 * margin) + stats_height
 
-shuffle(tiles)
+random.shuffle(tiles)
 # pass dynamic sizes to setup window instead of hardcoded values
-setup(window_width, window_height, 370, 0)
-addshape(car)
-hideturtle()
-tracer(False)
-onscreenclick(tap)
+turtle.setup(window_width, window_height, 370, 0)
+turtle.addshape(car)
+turtle.hideturtle()
+turtle.tracer(False)
+turtle.onscreenclick(tap)
 draw()
-done()
+turtle.done()
