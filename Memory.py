@@ -1,4 +1,4 @@
-# Memory, puzzle game of number pairs.
+## Memory, puzzle game of number pairs.
 
 from random import *
 from turtle import *
@@ -10,6 +10,8 @@ tiles = list(range(32)) * 2
 state = {'mark': None}
 hide = [True] * 64
 
+# Create var to count number of discovered pairs
+discovered = 0
 
 def square(x, y):
     """Draw white square with black outline at (x, y)."""
@@ -18,7 +20,7 @@ def square(x, y):
     down()
     color('black', 'white')
     begin_fill()
-    for count in range(4):
+    for _ in range(4):
         forward(50)
         left(90)
     end_fill()
@@ -39,12 +41,17 @@ def tap(x, y):
     spot = index(x, y)
     mark = state['mark']
 
+    # tell game that 'discovered' variable is global to prevent UnboundLocalError
+    global discovered
+
     if mark is None or mark == spot or tiles[mark] != tiles[spot]:
         state['mark'] = spot
     else:
         hide[spot] = False
         hide[mark] = False
         state['mark'] = None
+        # increase discovered pairs by 1 when tiles are a match
+        discovered += 1
 
 
 def draw():
@@ -68,12 +75,19 @@ def draw():
         color('black')
         write(tiles[mark], font=('Arial', 30, 'normal'))
 
+    # return Turtle to top to draw game stats
+    up()
+    # go to top left of grid to write game stats
+    goto(-195, 200)
+    # write current number of discovered pairs
+    write(f'Discovered Pairs: {discovered}', font=('Arial', 16, 'normal'))
     update()
     ontimer(draw, 100)
 
 
 shuffle(tiles)
-setup(420, 420, 370, 0)
+# agregar 40px de altura al juego para que se puedan desplegar datos
+setup(420, 460, 370, 0)
 addshape(car)
 hideturtle()
 tracer(False)
