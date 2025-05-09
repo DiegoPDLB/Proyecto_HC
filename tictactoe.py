@@ -81,17 +81,39 @@ def floor(value):
 # Estado del juego
 state = {
     'player': 0,
-    'used_cells': set()  # Conjunto para almacenar casillas ocupadas
+    'used_cells': set(),  # Conjunto para almacenar casillas ocupadas
+    'moves': {'X': [], 'O': []}  # Lista de movimientos por jugador
 }
 players = [drawx, drawo]
 
+def check_winner(moves):
+    """Verifica si hay un ganador con los movimientos dados."""
+    # Combinaciones ganadoras (coordenadas de las líneas)
+    winning_combinations = [
+        # Horizontales
+        [(-200, 133), (200, 133)],
+        [(-200, 0), (200, 0)],
+        [(-200, -133), (200, -133)],
+        # Verticales
+        [(-133, 200), (-133, -200)],
+        [(0, 200), (0, -200)],
+        [(133, 200), (133, -200)],
+        # Diagonales
+        [(-200, 200), (200, -200)],
+        [(-200, -200), (200, 200)]
+    ]
+    
+    # Verifica cada combinación ganadora
+    for start, end in winning_combinations:
+        if all((x, y) in moves for x, y in [start, end]):
+            return True
+    return False
 
 def tap(x, y):
     """Dibuja X u O en el cuadro tocado si está disponible."""
     x = floor(x)
     y = floor(y)
     
-    # Crear una tupla con las coordenadas de la celda
     cell = (x, y)
     
     # Verificar si la celda ya está ocupada
@@ -104,8 +126,20 @@ def tap(x, y):
     draw = players[player]
     draw(x, y)
     
-    # Registrar la celda como ocupada
+    # Registrar el movimiento
+    player_symbol = 'X' if player == 0 else 'O'
+    state['moves'][player_symbol].append(cell)
     state['used_cells'].add(cell)
+    
+    # Verificar si hay ganador
+    if check_winner(state['moves'][player_symbol]):
+        print(f'¡Jugador {player_symbol} ha ganado!')
+        return
+    
+    # Verificar si hay empate
+    if len(state['used_cells']) == 9:
+        print('¡Empate!')
+        return
     
     update()
     state['player'] = not player
