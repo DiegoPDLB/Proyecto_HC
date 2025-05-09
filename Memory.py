@@ -81,12 +81,18 @@ def draw():
     goto(-195, 200)
     # write current number of discovered pairs
     write(f'Discovered Pairs: {discovered}', font=('Arial', 16, 'normal'))
+    # check whether all tiles are no longer hidden
+    if all(not h for h in hide):
+        goto(-70, 0)
+        color('green')
+        # write message to let user know they have won
+        write("You Win!", font=('Arial', 20, 'bold'))
     update()
     ontimer(draw, 100)
 
 
 shuffle(tiles)
-# agregar 40px de altura al juego para que se puedan desplegar datos
+# add 40px of height to the game to display game stats
 setup(420, 460, 370, 0)
 addshape(car)
 hideturtle()
